@@ -97,7 +97,9 @@ Next, go to ```cloudiot_cluster_vertx/core-examples/src/main/resources/cluster.x
 
 Make sure you have the rabbitMQ cluster up and running with messages in the queue.
 
-To have messages in the queue, you can use 
+To have messages in the queue, you can use the python script under rabbitMQ/send.py.
+
+Don't forget to change the script to match your rabbitMQ configuration.
 
 ### 6. Compile Vert.x project
 
@@ -119,4 +121,15 @@ vertx run io.vertx.example.core.ha.Server -ha -cp target/classes -cluster-host [
 On the RPI backup (every other RPI, get in the core-examples/target/classes and execute
 ```
 vertx bare -cp target/classes/ -cluster-host [ADDRESSE_IP_RPI] 
+```
+
+The deployment of the verticle is quiet long, so be patient !
+
+On the server, you should see in the console something like this
+```
+Got Message : #5771 17.4752025023 11/23/17 00:03:20
+Got Message : #5772 18.0021845919 11/23/17 00:03:20
+Got Message : #5773 15.6700641506 11/23/17 00:03:20
+Got Message : #5774 18.4193061289 11/23/17 00:03:20
+Got Message : #5775 10.5818496117 11/23/17 00:03:20
 ```
