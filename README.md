@@ -31,7 +31,6 @@ sudo apt-get autoremove
 ### 2. Install latest version of Oracle Java
 ```
 sudo apt-key adv --recv-key --keyserver keyserver.ubuntu.com EEA14886
-
 ```
 If you have an dirmngr error —> `sudo apt-get install dirmngr`
 
