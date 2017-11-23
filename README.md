@@ -33,7 +33,7 @@ sudo apt-get autoremove
 sudo apt-key adv --recv-key --keyserver keyserver.ubuntu.com EEA14886
 
 ```
-If you have an dirmngr error —> ```sudo apt-get install dirmngr```
+If you have an dirmngr error —> `sudo apt-get install dirmngr`
 
 Go to this file
 ```
@@ -56,6 +56,9 @@ Check success
 ```
 java -version
 ```
+
+Source : https://raspberrypi.stackexchange.com/questions/45976/how-do-i-update-java-8-in-raspbian
+
 ### 3. Installation of Vert.x
 
 Download the full of Vert.x : http://vertx.io/download/
@@ -66,12 +69,12 @@ Add to .bashrc
 ```
 export PATH=$PATH:~/vertx/bin
 ```
-Run ```source .bashrc```
+Run `source .bashrc`
 
 
 ### 4. Configuration of Vert.x
 
-Go the this file ```cloudiot_cluster_vertx/core-examples/src/main/java/io/vertx/example/core/ha/Server.java``` and check if the following parameter are correct with the rabbitMQ configuration.
+Go the this file `cloudiot_cluster_vertx/core-examples/src/main/java/io/vertx/example/core/ha/Server.java` and check if the following parameter are correct with the rabbitMQ configuration.
 ```
 String QUEUE_NAME = "task_queue"; // Name of the queue
 // PARAMETRE DE CONNEXION RABBITMQ
@@ -97,7 +100,7 @@ Next, go to ```cloudiot_cluster_vertx/core-examples/src/main/resources/cluster.x
 
 Make sure you have the rabbitMQ cluster up and running with messages in the queue.
 
-To have messages in the queue, you can use the python script under rabbitMQ/send.py.
+To send messages into the queue, you can use the python script under rabbitMQ/send.py.
 
 Don't forget to change the script to match your rabbitMQ configuration.
 
@@ -123,7 +126,7 @@ On the RPI backup (every other RPI, get in the core-examples/target/classes and 
 vertx bare -cp target/classes/ -cluster-host [ADDRESSE_IP_RPI] 
 ```
 
-The deployment of the verticle is quiet long, so be patient !
+The deployment of the verticle is quiet long (for the server and backup), so be patient !
 
 On the server, you should see in the console something like this
 ```
@@ -133,3 +136,27 @@ Got Message : #5773 15.6700641506 11/23/17 00:03:20
 Got Message : #5774 18.4193061289 11/23/17 00:03:20
 Got Message : #5775 10.5818496117 11/23/17 00:03:20
 ```
+
+If you have an error like `io.vertx.core.impl.NoStackTraceThrowable: Not connected`, it propably means that the vertx client can't connect to the rabbitMQ cluster. 
+
+I had this error, my rabbitMQ server was on my computer. I resolved it by doing the following action.
+
+On every rabbitMQ server of the cluster go to `etc/rabbitmq/rabbitmq-env.conf`
+If you have a line with NODE_IP_ADDRESS, remove it. Removing the NODE_IP_ADDRESS entry from the config binds the port to all network inferfaces.
+
+Source : https://superuser.com/questions/464311/open-port-5672-tcp-for-access-to-rabbitmq-on-mac
+
+
+### 7. Testing the Vert.X cluster
+
+For example, make a Vert.X cluster with 3 nodes. Make sure you see the terminal output of Vert.X of the 3 nodes 
+
+When the messages are being read by the server, connect via ssh to this node.
+
+Get the PID of Vert.X with the command `top`, it should have the name "java".
+
+Kill the processus with `kill -9 [PID]`
+
+You should see that the Vert.X application has been redeployed on another node. 
+
+See the demo of this test --> https://www.youtube.com/watch?v=VsiiOOSNfqs
