@@ -159,4 +159,4 @@ Kill the processus with `kill -9 [PID]`
 
 You should see that the Vert.X application has been redeployed on another node. 
 
-See the demo of this test --> https://www.youtube.com/watch?v=VsiiOOSNfqs
+See the demo of this test —> https://www.youtube.com/watch?v=VsiiOOSNfqs
