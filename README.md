@@ -1,4 +1,10 @@
-## Cluster vertX + rabbitMQ 
+# Cluster vertX + rabbitMQ 
+By following this tutorial, you will be able to make a vertX cluster that will be tolerant to failure. 
+The main node job is to read messages from a rabbitMQ message queue.
+
+If the main node goes down, one of other standby node will take over and continue to read the messages from the queue.
+During a take over, there is no message lost.
+
 In order to make the cluster work follow this step : 
 
 ### 1. Uninstall OpenJDK and / or old version of Oracle Java 
